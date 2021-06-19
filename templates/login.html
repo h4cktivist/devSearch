@@ -22,23 +22,24 @@
     <div class="auth">
       <div class="card">
         <div class="auth__header text-center">
-          <a href="/">
+          <a href="{% url 'index' %}">
             <img src="{% static 'images/icon.svg' %}" alt="icon" />
           </a>
           <h3>Account Login</h3>
           <p>Hello Developer, Welcome Back!</p>
         </div>
 
-        <form action="#" class="form auth__form">
+        <form class="form auth__form" method="post">
+          {% csrf_token %}
           <!-- Input:Email -->
           <div class="form__field">
-            <label for="formInput#text">Username: </label>
+            <label for="formInput#text">Email: </label>
             <input
               class="input input--text"
               id="formInput#text"
               type="text"
-              name="username"
-              placeholder="Enter your username..."
+              name="email"
+              placeholder="Enter your email..."
             />
           </div>
 
@@ -60,7 +61,7 @@
         </form>
         <div class="auth__alternative">
           <p>Don’t have an Account?</p>
-          <a href="signup.html">Sign Up</a>
+          <a href="{% url 'singup' %}">Sign Up</a>
         </div>
       </div>
     </div>
