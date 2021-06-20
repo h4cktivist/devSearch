@@ -22,7 +22,7 @@ class Skill(models.Model):
     description = models.TextField('Skill description')
 
     def __str__(self):
-        return f'{self.name} Skill'
+        return f'{self.account} - {self.name} Skill'
 
 
 class Link(models.Model):
