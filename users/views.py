@@ -10,18 +10,24 @@ from django.db import IntegrityError
 
 def signup(request):
     if request.method == 'POST':
-        user = User(
-            first_name=request.POST.get('name').rsplit(' ')[0],
-            last_name=request.POST.get('name').rsplit(' ')[1],
-            username=request.POST.get('email'),
-            email=request.POST.get('email'),
-            password=make_password(request.POST.get('password'))
-        )
-        try:
-            user.save()
-            return redirect('login')
-        except IntegrityError:
-            messages.info(request, 'This user is already exist!')
+        if ' ' not in request.POST.get('name'):
+            messages.info(request, 'Full name is incorrect!')
+        elif request.POST.get('password') != request.POST.get('confirm-password'):
+            messages.info(request, 'Passwords do not match!')
+
+        else:
+            user = User(
+                first_name=request.POST.get('name').rsplit(' ')[0],
+                last_name=request.POST.get('name').rsplit(' ')[1],
+                username=request.POST.get('email'),
+                email=request.POST.get('email'),
+                password=make_password(request.POST.get('password'))
+            )
+            try:
+                user.save()
+                return redirect('login')
+            except IntegrityError:
+                messages.info(request, 'This user is already exist!')
 
     return render(request, 'signup.html')
 
