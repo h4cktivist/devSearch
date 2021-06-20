@@ -33,11 +33,11 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="index.html">Developers</a></li>
+          <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
           <li class="header__menuItem"><a href="projects.html">Projects</a></li>
           <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
-          <li class="header__menuItem"><a href="account.html">My Account</a></li>
-          <li class="header__menuItem"><a href="login.html" class="btn btn--sub">Login/Sign Up</a></li>
+          <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
+          <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
         </ul>
       </nav>
     </div>
@@ -50,26 +50,16 @@
         <div class="column column--1of3">
           <div class="card text-center">
             <div class="card__body dev">
-              <img class="avatar avatar--xl" src="https://avatars.githubusercontent.com/u/33843378" />
-              <h2 class="dev__name">Dennis Ivanov</h2>
-              <p class="dev__title">Expirance FullStack Developer, Youtuber and Instructor</p>
-              <p class="dev__location">Based in Florida, USA</p>
+              <img class="avatar avatar--xl" src="{{ user.account.avatar.url }}" />
+              <h2 class="dev__name">{{ user.first_name }} {{ user.last_name }}</h2>
+              <p class="dev__title">{{ user.account.summary }}</p>
+              <p class="dev__location">{{ user.account.location }}</p>
               <ul class="dev__social">
-                <li>
-                  <a title="Github" href="#" target="_blank"><i class="im im-github"></i></a>
-                </li>
-                <li>
-                  <a title="Stackoverflow" href="#" target="_blank"><i class="im im-stackoverflow"></i></a>
-                </li>
-                <li>
-                  <a title="Twitter" href="#" target="_blank"><i class="im im-twitter"></i></a>
-                </li>
-                <li>
-                  <a title="LinkedIn" href="#" target="_blank"><i class="im im-linkedin"></i></a>
-                </li>
-                <li>
-                  <a title="Personal Website" href="#" target="_blank"><i class="im im-globe"></i></a>
-                </li>
+                {% for link in user.account.link_set.all %}
+                    <li>
+                      <a title="{{ link.name }}" href="{{ link.link }}" target="_blank"><i class="{{ link.icon }}"></i></a>
+                    </li>
+                {% endfor %}
               </ul>
               <a href="#" class="btn btn--sub btn--lg">Send Message </a>
             </div>
@@ -78,72 +68,25 @@
         <div class="column column--2of3">
           <div class="devInfo">
             <h3 class="devInfo__title">About Me</h3>
-            <p class="devInfo__about">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex illum ipsum iusto consequatur. Totam,
-              dolorum fugiat, debitis facere illo nostrum nesciunt maxime, deserunt enim voluptatibus modi natus velit
-              voluptatum. Dicta eritatis exercitationem ut quos a placeat obcaecati? Architecto illum!
-              <br />
-              Amet consectetur adipisicing elit. Veritatis exercitationem ut quos a placeat obcaecati? Architecto
-              illum, atque delectus nemo dolorem inventore ab facilis? Dolor placeat vel delectus ipsam ullam.
-            </p>
+            <p class="devInfo__about">{{ user.account.about }}</p>
           </div>
           <div class="devInfo">
             <h3 class="devInfo__title">Skills</h3>
             <div class="devInfo__skills">
-              <div class="devSkill">
-                <h4 class="devSkill__title">JavaScript</h4>
-                <p class="devSkill__info">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae neque voluptatum ut? Quaerat, ea
-                  cumque! Dolorum provident esse molestias commodi odit sapiente quod quasi corrupti obcaecati? Nobis
-                  ex temporibus quaerat!
-                </p>
-              </div>
-              <div class="devSkill">
-                <h4 class="devSkill__title">React</h4>
-                <p class="devSkill__info">
-                  Smet consectetur adipisicing elit. Omnis, nihil? Accusamus aspernatur aut debitis vitae quaerat
-                  nihil fugiat, doloremque nesciunt alias pariatur maxime unde, nam saepe laborum at odit labore.
-                </p>
-              </div>
-              <div class="devSkill">
-                <h4 class="devSkill__title">Express(Nodejs)</h4>
-                <p class="devSkill__info">
-                  Auae error deleniti aperiam enim nisi nesciunt, ratione eveniet eos fuga ad recusandae mollitia!
-                  Facere earum, distinctio nihil recusandae ipsum nesciunt. Possimus, ex. Officia maxime nihil
-                  inventore cum tenetur! Veritatis sapiente libero ducimus nesciunt itaque, placeat inventore sint
-                  blanditiis?
-                </p>
-              </div>
+              {% for skill in user.account.skill_set.all %}
+                  <div class="devSkill">
+                    <h4 class="devSkill__title">{{ skill.name }}</h4>
+                    <p class="devSkill__info">{{ skill.description }}</p>
+                  </div>
+              {% endfor %}
 
               <h3 class="devInfo__subtitle">Other Skills</h3>
               <div class="devInfo__otherSkills">
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Figma</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Vuejs</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>REST API</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>GraphQL</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>TypeScript</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Webpack</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>NextJS</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>Postgres</small>
-                </span>
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>MongoDB</small>
-                </span>
+                  {% for skill in user.account.other_skills %}
+                    <span class="tag tag--pill tag--sub tag--lg">
+                      <small>{{ skill }}</small>
+                    </span>
+                  {% endfor %}
               </div>
             </div>
           </div>
@@ -177,61 +120,6 @@
                   </a>
                 </div>
               </div>
-
-              <div class="column">
-                <div class="card project">
-                  <a href="single-project.html" class="project">
-                    <img class="project__thumbnail" src="images/project-c.png" alt="project thumbnail" />
-                    <div class="card__body">
-                      <h3 class="project__title">Another Landing Page</h3>
-                      <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>
-                      <p class="project--rating">
-                        <span style="font-weight: bold;">36%</span> Postitive
-                        Feedback (18 Votes)
-                      </p>
-                      <div class="project__tags">
-                        <span class="tag tag--pill tag--main">
-                          <small>NextJS</small>
-                        </span>
-                        <span class="tag tag--pill tag--main">
-                          <small>GraphQL</small>
-                        </span>
-                        <span class="tag tag--pill tag--main">
-                          <small>TypeScript</small>
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="column">
-                <div class="card project">
-                  <a href="single-project.html" class="project">
-                    <img class="project__thumbnail" src="images/project-a.png" alt="project thumbnail" />
-                    <div class="card__body">
-                      <h3 class="project__title">Yoga Studio Landing Page Website and Design</h3>
-                      <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>
-                      <p class="project--rating">
-                        <span style="font-weight: bold;">98%</span> Postitive
-                        Feedback (72 Votes)
-                      </p>
-                      <div class="project__tags">
-                        <span class="tag tag--pill tag--main">
-                          <small>NextJS</small>
-                        </span>
-                        <span class="tag tag--pill tag--main">
-                          <small>GraphQL</small>
-                        </span>
-                        <span class="tag tag--pill tag--main">
-                          <small>TypeScript</small>
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>

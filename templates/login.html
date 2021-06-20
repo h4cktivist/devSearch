@@ -58,6 +58,9 @@
             <input class="btn btn--sub btn--lg" type="submit" value="Log In" />
             <a href="forgetpassword.html">Forget Password?</a>
           </div>
+          {% for msg in messages %}
+              <p>{{ msg }}</p>
+          {% endfor %}
         </form>
         <div class="auth__alternative">
           <p>Don’t have an Account?</p>

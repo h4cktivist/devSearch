@@ -80,6 +80,9 @@
           <div class="auth__actions">
             <input class="btn btn--sub btn--lg" type="submit" value="Sign  In" />
           </div>
+         {% for msg in messages %}
+            <p>{{ msg }}</p>
+         {% endfor %}
         </form>
         <div class="auth__alternative">
           <p>Already have an Account?</p>
