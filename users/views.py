@@ -2,10 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from django.contrib.auth.models import User
+from .models import Skill
+
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from django.db import IntegrityError
+from django.http import HttpResponseForbidden
 
 
 def signup(request):
@@ -52,10 +56,21 @@ def logOut(request):
     return redirect('login')
 
 
+@login_required(login_url='login')
 def account(request):
     return render(request, 'account.html', {'user': request.user})
 
 
-def profile(request, id):
-    user = User.objects.get(id=id)
+def profile(request, username):
+    user = User.objects.get(username=username)
     return render(request, 'profile.html', {'user': user})
+
+
+# ACCOUNT STUFF
+def deleteSkill(request, id):
+    skill = Skill.objects.get(id=id)
+    if skill.account.user == request.user:
+        skill.delete()
+        return redirect('account')
+    else:
+        return HttpResponseForbidden()
