@@ -58,10 +58,11 @@
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="#" method="get">
+          <form class="form" method="post">
+            {% csrf_token %}
             <div class="form__field">
               <label for="formInput#search">Search Developers </label>
-              <input class="input input--text" id="formInput#search" type="text" name="text"
+              <input class="input input--text" id="formInput#search" type="text" name="search"
                 placeholder="Search by developer name" />
             </div>
 
@@ -74,62 +75,55 @@
     <section class="devlist">
       <div class="container">
         <div class="grid grid--three">
+
+        {% for user in users %}
           <div class="column card">
             <div class="dev">
-              <a href="/profile.html" class="card__body">
+              <a href="{% url 'profile' user.username %}" class="card__body">
                 <div class="dev__profile">
-                  <img class="avatar avatar--md" src="https://avatars.githubusercontent.com/u/22437186" alt="image" />
+                  <img class="avatar avatar--md" src="{{ user.account.avatar.url }}" alt="image" />
                   <div class="dev__meta">
-                    <h3>Shahriar P. Shuvo</h3>
-                    <h5>FullStack Web Designer & Developer</h5>
+                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                    <h5>{{ user.account.summary }}</h5>
                   </div>
                 </div>
-                <p class="dev__info">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate, ducimus inventore! Sunt,
-                  veniam veritatis? Veritatis placeat, deleniti iure tempore veniam perspiciatis, soluta cupiditate
-                  animi, exercitationem molestias nam doloremque architecto odit.
-                </p>
+                <p class="dev__info">{{ user.account.about }}</p>
                 <div class="dev__skills">
-                  <span class="tag tag--pill tag--main">
-                    <small>JavaScript</small>
-                  </span>
-                  <span class="tag tag--pill tag--main">
-                    <small>React</small>
-                  </span>
-                  <span class="tag tag--pill tag--main">
-                    <small>SCSS</small>
-                  </span>
-                  <span class="tag tag--pill tag--main">
-                    <small>Nodejs</small>
-                  </span>
-                  <span class="tag tag--pill tag--main">
-                    <small>Express</small>
-                  </span>
-                  <span class="tag tag--pill tag--main">
-                    <small>GraphQL</small>
-                  </span>
+                    {% for skill in user.account.skill_set.all %}
+                      <span class="tag tag--pill tag--main">
+                        <small>{{ skill.name }}</small>
+                      </span>
+                    {% endfor %}
                 </div>
               </a>
             </div>
           </div>
+        {% endfor %}
         </div>
       </div>
     </section>
 
     <div class="pagination">
       <ul class="container">
-        <li><a href="#" class="btn btn--disabled">&#10094; Prev</a></li>
-        <li><a href="#" class="btn btn--sub">01</a></li>
-        <li><a href="#" class="btn">02</a></li>
-        <li><a href="#" class="btn">03</a></li>
-        <li><a href="#" class="btn">04</a></li>
-        <li><a href="#" class="btn">05</a></li>
-        <li><a href="#" class="btn">06</a></li>
-        <li><a href="#" class="btn">07</a></li>
-        <li><a href="#" class="btn">08</a></li>
-        <li><a href="#" class="btn">09</a></li>
-        <li><a href="#" class="btn">10</a></li>
-        <li><a href="#" class="btn">Next &#10095;</a></li>
+      {% if users.has_previous %}
+        <li><a href="{% url 'index' %}?page={{ users.previous_page_number }}" class="btn">&#10094; Prev</a></li>
+      {% else %}
+          <li><a class="btn btn--disabled">&#10094; Prev</a></li>
+      {% endif %}
+
+          {% for page in users.paginator.page_range %}
+            {% if users.number == page %}
+                <li><a href="{% url 'index' %}?page={{ page }}" class="btn btn--sub">{{ page }}</a></li>
+            {% else %}
+                <li><a href="{% url 'index' %}?page={{ page }}" class="btn">{{ page }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+      {% if users.has_next %}
+        <li><a href="{% url 'index' %}?page={{ users.next_page_number }}" class="btn">Next &#10095;</a></li>
+      {% else %}
+          <li><a class="btn btn--disabled">Next &#10095;</a></li>
+      {% endif %}
       </ul>
     </div>
   </main>
