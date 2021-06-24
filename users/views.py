@@ -67,10 +67,30 @@ def profile(request, username):
 
 
 # ACCOUNT STUFF
+def editSkill(request, id):
+    skill = Skill.objects.get(id=id)
+    if skill.account.user == request.user:
+        if request.method == 'POST':
+            skill.name = request.POST.get('name')
+            skill.description = request.POST.get('desc')
+            skill.save()
+            return redirect('account')
+        else:
+            return render(request, 'skill-edit-form.html', {'skill': skill})
+    else:
+        return HttpResponseForbidden()
+
+
 def deleteSkill(request, id):
     skill = Skill.objects.get(id=id)
     if skill.account.user == request.user:
-        skill.delete()
-        return redirect('account')
+        if request.method == 'POST':
+            skill.delete()
+            return redirect('account')
+        else:
+            context = {
+                'warning': f'Are your sure you want to delete this {skill.name} skill?'
+            }
+            return render(request, 'delete.html', context)
     else:
         return HttpResponseForbidden()

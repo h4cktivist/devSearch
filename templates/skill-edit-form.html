@@ -23,7 +23,7 @@
     <!-- Header Section -->
     <header class="header">
         <div class="container container--narrow">
-            <a href="{% url 'index' %}" class="header__logo">
+            <a href="/" class="header__logo">
                 <img src="{% static 'images/logo.svg' %}" alt="DevSearch Logo" />
             </a>
             <nav class="header__nav">
@@ -56,9 +56,21 @@
 
                 <form class="form" method="POST">
                     {% csrf_token %}
-                    <p>{{ warning }}</p>
-                    <a class="btn btn--sub btn--lg  my-md" href="{% url 'account' %}">&#x2190 Go Back</a>
-                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Delete" />
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text">New Skill Name: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="name"
+                            placeholder="Enter New Skill Name" value="{{ skill.name }}"/>
+                    </div>
+
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text">New Skill Description: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="desc"
+                            placeholder="Enter New Skill Description" value="{{ skill.description }}"/>
+                    </div>
+
+                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
                 </form>
             </div>
         </div>

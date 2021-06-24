@@ -92,7 +92,7 @@
                 </p>
               </td>
               <td class="settings__tableActions">
-                <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i> Edit</a>
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-skill' skill.id %}"><i class="im im-edit"></i> Edit</a>
                 <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-skill' skill.id %}"><i class="im im-x-mark-circle-o"></i>
                   Delete</a>
               </td>
