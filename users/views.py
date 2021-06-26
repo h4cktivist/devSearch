@@ -67,6 +67,19 @@ def profile(request, username):
 
 
 # ACCOUNT STUFF
+def addSkill(request):
+    if request.method == 'POST':
+        skill = Skill(
+            account=request.user.account,
+            name=request.POST.get('name'),
+            description=request.POST.get('desc')
+        )
+        skill.save()
+        return redirect('account')
+
+    return render(request, 'skill-add-edit-form.html')
+
+
 def editSkill(request, id):
     skill = Skill.objects.get(id=id)
     if skill.account.user == request.user:
@@ -76,7 +89,7 @@ def editSkill(request, id):
             skill.save()
             return redirect('account')
         else:
-            return render(request, 'skill-edit-form.html', {'skill': skill})
+            return render(request, 'skill-add-edit-form.html', {'skill': skill})
     else:
         return HttpResponseForbidden()
 

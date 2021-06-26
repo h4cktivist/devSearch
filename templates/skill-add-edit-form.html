@@ -58,16 +58,16 @@
                     {% csrf_token %}
                     <!-- Input:Text -->
                     <div class="form__field">
-                        <label for="formInput#text">New Skill Name: </label>
+                        <label for="formInput#text">Skill Name: </label>
                         <input class="input input--text" id="formInput#text" type="text" name="name"
-                            placeholder="Enter New Skill Name" value="{{ skill.name }}"/>
+                            placeholder="Enter Skill Name" value="{{ skill.name }}"/>
                     </div>
 
                     <!-- Input:Text -->
                     <div class="form__field">
-                        <label for="formInput#text">New Skill Description: </label>
+                        <label for="formInput#text">Skill Description: </label>
                         <input class="input input--text" id="formInput#text" type="text" name="desc"
-                            placeholder="Enter New Skill Description" value="{{ skill.description }}"/>
+                            placeholder="Enter Skill Description" value="{{ skill.description }}"/>
                     </div>
 
                     <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
