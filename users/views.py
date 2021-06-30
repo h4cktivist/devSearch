@@ -67,6 +67,7 @@ def profile(request, username):
 
 
 # ACCOUNT STUFF
+@login_required(login_url='login')
 def editAccount(request):
     user = request.user
     if request.method == 'POST':
@@ -89,6 +90,7 @@ def editAccount(request):
     return render(request, 'account-edit-form.html', {'user': user})
 
 
+@login_required(login_url='login')
 def addSkill(request):
     if request.method == 'POST':
         skill = Skill(
@@ -102,6 +104,7 @@ def addSkill(request):
     return render(request, 'skill-add-edit-form.html')
 
 
+@login_required(login_url='login')
 def editSkill(request, id):
     skill = Skill.objects.get(id=id)
     if skill.account.user == request.user:
@@ -116,6 +119,7 @@ def editSkill(request, id):
         return HttpResponseForbidden()
 
 
+@login_required(login_url='login')
 def deleteSkill(request, id):
     skill = Skill.objects.get(id=id)
     if skill.account.user == request.user:
