@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+  <!-- Icon - IconMonster -->
+  <link rel="stylesheet" href="https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css" />
+  <!-- Mumble UI -->
+  <link rel="stylesheet" href="{% static 'uikit/styles/uikit.css' %}" />
+  <!-- Dev Search UI -->
+  <link rel="stylesheet" href="{% static 'styles/app.css' %}" />
+
+    <title>DevSearch - Connect with Developers!</title>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container container--narrow">
+            <a href="/" class="header__logo">
+                <img src="{% static 'images/logo.svg' %}" alt="DevSearch Logo" />
+            </a>
+            <nav class="header__nav">
+                <input type="checkbox" id="responsive-menu" />
+                <label for="responsive-menu" class="toggle-menu">
+                    <span>Menu</span>
+                    <div class="toggle-menu__lines"></div>
+                </label>
+                <ul class="header__menu">
+                    <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
+                    <li class="header__menuItem"><a href="projects.html">Projects</a></li>
+                    <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
+                    <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
+                   {% if request.user.username %}
+                       <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Log Out</a></li>
+                    {% else %}
+                       <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main class="formPage my-xl">
+        <div class="content-box">
+            <div class="formWrapper">
+                <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
+                <br>
+
+                <form class="form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text">Full Name: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="full_name"
+                            value="{{ user.first_name }} {{ user.last_name }}" />
+                    </div>
+
+                    <div class="form__field">
+                        <label for="formInput#text">Email: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="email"
+                            value="{{ user.email }}" />
+                    </div>
+
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text">Summary: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="summary"
+                            value="{{ user.account.summary }}" />
+                    </div>
+
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text">Location: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="location"
+                            value="{{ user.account.location }}" />
+                    </div>
+
+                    <div class="form__field">
+                        <label for="formInput#text">About: </label>
+                        <textarea class="input input--text" id="formInput#text" type="text" name="about">{{ user.account.about }}
+                        </textarea>
+                    </div>
+
+                    <div class="form__field">
+                        <label for="formInput#text">Avatar: </label>
+                        <input class="input input--text" id="formInput#text" type="file" accept="image/*" name="avatar" />
+                    </div>
+                    {% for msg in messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

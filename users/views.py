@@ -67,6 +67,28 @@ def profile(request, username):
 
 
 # ACCOUNT STUFF
+def editAccount(request):
+    user = request.user
+    if request.method == 'POST':
+        if ' ' not in request.POST.get('full_name'):
+            messages.info(request, 'Full name is incorrect!')
+
+        else:
+            user.first_name = request.POST.get('full_name').rsplit(' ')[0]
+            user.last_name = request.POST.get('full_name').rsplit(' ')[1]
+            user.email = request.POST.get('email')
+            user.account.summary = request.POST.get('summary')
+            user.account.location = request.POST.get('location')
+            user.account.about = request.POST.get('about')
+            if request.FILES.get('avatar') is not None:
+                user.account.avatar = request.FILES.get('avatar')
+
+            user.save()
+            return redirect('account')
+
+    return render(request, 'account-edit-form.html', {'user': user})
+
+
 def addSkill(request):
     if request.method == 'POST':
         skill = Skill(
