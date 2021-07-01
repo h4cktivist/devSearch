@@ -56,7 +56,7 @@
           </div>
           <div class="auth__actions">
             <input class="btn btn--sub btn--lg" type="submit" value="Log In" />
-            <a href="forgetpassword.html">Forget Password?</a>
+            <a href="{% url 'reset_password' %}">Forget Password?</a>
           </div>
           {% for msg in messages %}
               <p>{{ msg }}</p>
