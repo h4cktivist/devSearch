@@ -33,11 +33,15 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="index.html">Developers</a></li>
-          <li class="header__menuItem"><a href="projects.html">Projects</a></li>
-          <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
-          <li class="header__menuItem"><a href="account.html">My Account</a></li>
-          <li class="header__menuItem"><a href="login.html" class="btn btn--sub">Login/Sign Up</a></li>
+          <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
+          <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
+          <li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
+          <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
+          {% if request.user.username %}
+            <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Log Out</a></li>
+          {% else %}
+            <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>
@@ -48,27 +52,15 @@
     <div class="content-box">
       <h3 class="inbox__title">New Messages(<span>2</span>)</h3>
       <ul class="messages">
-        <li class="message message--unread">
-          <a href="message.html">
-            <span class="message__author">Dennis Ivanov</span>
-            <span class="message__subject">Working Opportunity for Web Design Company</span>
-            <span class="message__date">May 31, 2021, 04:37 PM</span>
-          </a>
-        </li>
-        <li class="message message--unread">
-          <a href="message.html">
-            <span class="message__author">Md. Shahriar Parvez</span>
-            <span class="message__subject">Up for a Freelancing Project?</span>
-            <span class="message__date">May 30, 2021, 07:47 PM</span>
-          </a>
-        </li>
-        <li class="message">
-          <a href="message.html">
-            <span class="message__author">Sulamita Ivanov</span>
-            <span class="message__subject">Another Opportunity for Side Income</span>
-            <span class="message__date">May 29, 2021, 09:45 AM</span>
-          </a>
-        </li>
+         {% for message in messages %}
+            <li class="message message--unread">
+              <a href="{% url 'message' message.id %}">
+                <span class="message__author">{{ message.user_from.first_name }} {{ message.user_from.last_name }}</span>
+                <span class="message__subject">{{ message.subject }}</span>
+                <span class="message__date">{{ message.date }}</span>
+              </a>
+            </li>
+         {% endfor %}
       </ul>
     </div>
   </main>

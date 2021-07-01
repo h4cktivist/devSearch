@@ -1,9 +1,12 @@
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 
-from .models import Project
+from .models import Project, Message
 from django.contrib.auth.models import User
 from django.db.models import Q
+
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -44,3 +47,18 @@ def singleProject(request, id):
         return redirect('single-project', project.id)
 
     return render(request, 'single-project.html', {'project': project})
+
+
+@login_required(login_url='login')
+def inbox(request):
+    messages = Message.objects.filter(user_to=request.user)
+    return render(request, 'inbox.html', {'messages': messages})
+
+
+@login_required(login_url='login')
+def singleMessage(request, id):
+    message = Message.objects.get(id=id)
+    if message.user_to == request.user:
+        return render(request, 'message.html', {'message': message})
+
+    return HttpResponseForbidden

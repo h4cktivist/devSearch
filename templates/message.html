@@ -33,11 +33,15 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="index.html">Developers</a></li>
-          <li class="header__menuItem"><a href="projects.html">Projects</a></li>
-          <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
-          <li class="header__menuItem"><a href="account.html">My Account</a></li>
-          <li class="header__menuItem"><a href="login.html" class="btn btn--sub">Login/Sign Up</a></li>
+          <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
+          <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
+          <li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
+          <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
+          {% if request.user.username %}
+            <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Log Out</a></li>
+          {% else %}
+            <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>
@@ -47,18 +51,12 @@
   <main class="messagePage my-xl">
     <div class="content-box">
       <div class="message">
-        <a class="backButton" href="inbox.html"><i class="im im-angle-left"></i></a>
-        <h2 class="message__subject">Working Opportunity for Web Design Company</h2>
-          <a href="profile.html" class="message__author">Dennis Ivanov</a>
-          <p class="message__date">May 31, 2021, 04:37 PM</p>
+        <a class="backButton" href="{% url 'inbox' %}"><i class="im im-angle-left"></i></a>
+        <h2 class="message__subject">{{ message.subject }}</h2>
+          <a href="profile.html" class="message__author">{{ message.user_from.first_name }} {{ message.user_from.last_name }}</a>
+          <p class="message__date">{{ message.date }}</p>
           <div class="message__body">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, ea? Facere minus vel nam, quas nisi dolore
-            possimus tempora commodi. Praesentium nisi totam quas pariatur culpa nostrum dolore, nemo voluptatem!
-            <br /><br />
-            Voluptate dolores veniam ducimus cumque, harum fuga quaerat, culpa distinctio voluptas magnam a unde
-            reiciendis similique necessitatibus obcaecati voluptatibus deserunt voluptatum numquam ullam in ipsum, ea
-            aperiam. Dolorum rerum pariatur quaerat. Debitis tempora aliquid libero alias aperiam illo fuga ipsum magni
-            quia.
+              {{ message.text }}
           </div>
       </div>
     </div>
