@@ -34,7 +34,7 @@
         </label>
         <ul class="header__menu">
           <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
-          <li class="header__menuItem"><a href="projects.html">Projects</a></li>
+          <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
           <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
           <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
           <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
@@ -94,32 +94,26 @@
             <h3 class="devInfo__title">Projects</h3>
             <div class="grid grid--two">
 
-              <div class="column">
-                <div class="card project">
-                  <a href="single-project.html" class="project">
-                    <img class="project__thumbnail" src="images/project-b.png" alt="project thumbnail" />
-                    <div class="card__body">
-                      <h3 class="project__title">DevSearch UI Design</h3>
-                      <p><a class="project__author" href="profile.html">By Shahriar P. Shuvo</a></p>
-                      <p class="project--rating">
-                        <span style="font-weight: bold;">92%</span> Postitive
-                        Feedback (62 Votes)
-                      </p>
-                      <div class="project__tags">
-                        <span class="tag tag--pill tag--main">
-                          <small>NextJS</small>
-                        </span>
-                        <span class="tag tag--pill tag--main">
-                          <small>GraphQL</small>
-                        </span>
-                        <span class="tag tag--pill tag--main">
-                          <small>TypeScript</small>
-                        </span>
-                      </div>
+            {% for project in projects %}
+                <div class="column">
+                    <div class="card project">
+                      <a href="{% url 'single-project' project.id %}" class="project">
+                        <img class="project__thumbnail" src="{{ project.image.url }}" alt="project thumbnail" />
+                        <div class="card__body">
+                          <h3 class="project__title">{{ project.title }}</h3>
+                          <p><a class="project__author" href="{% url 'profile' user.username %}">By {{ project.user.first_name }} {{ project.user.last_name }}</a></p>
+                          <div class="project__tags">
+                              {% for tag in project.tags %}
+                                <span class="tag tag--pill tag--main">
+                                  <small>{{ tag }}</small>
+                                </span>
+                              {% endfor %}
+                          </div>
+                        </div>
+                      </a>
                     </div>
-                  </a>
                 </div>
-              </div>
+            {% endfor %}
             </div>
           </div>
         </div>

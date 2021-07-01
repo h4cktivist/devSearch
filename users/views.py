@@ -3,6 +3,7 @@ from django.contrib import messages
 
 from django.contrib.auth.models import User
 from .models import Skill
+from main.models import Project
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
@@ -58,12 +59,20 @@ def logOut(request):
 
 @login_required(login_url='login')
 def account(request):
-    return render(request, 'account.html', {'user': request.user})
+    context = {
+        'user': request.user,
+        'projects': Project.objects.filter(user=request.user)
+    }
+    return render(request, 'account.html', context)
 
 
 def profile(request, username):
     user = User.objects.get(username=username)
-    return render(request, 'profile.html', {'user': user})
+    context = {
+        'user': user,
+        'projects': Project.objects.filter(user=user)
+    }
+    return render(request, 'profile.html', context)
 
 
 # ACCOUNT STUFF

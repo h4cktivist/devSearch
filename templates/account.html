@@ -105,23 +105,24 @@
           </div>
 
           <table class="settings__table">
-            <tr>
-              <td class="settings__thumbnail">
-                <a href="single-project.html"><img src="images/project-a.png" alt="Project Thumbnail" /></a>
-              </td>
-              <td class="settings__tableInfo">
-                <a href="single-project.html">Yoga Studio Landing Page</a>
-                <p>
-                  Consectetur adipisicing elit. Natus nam dolore aut sed vitae eos architecto unde tempore
-                  exercitationem fugiat?...
-                </p>
-              </td>
-              <td class="settings__tableActions">
-                <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i> Edit</a>
-                <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-x-mark-circle-o"></i>
-                  Delete</a>
-              </td>
-            </tr>
+              {% for project in projects %}
+                <tr>
+                  <td class="settings__thumbnail">
+                    <a href="single-project.html"><img src="{{ project.image.url }}" alt="Project Thumbnail" /></a>
+                  </td>
+                  <td class="settings__tableInfo">
+                    <a href="single-project.html">{{ project.title }}</a>
+                    <p>
+                        {{ project.description }}
+                    </p>
+                  </td>
+                  <td class="settings__tableActions">
+                    <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i> Edit</a>
+                    <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-x-mark-circle-o"></i>
+                      Delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
           </table>
         </div>
       </div>

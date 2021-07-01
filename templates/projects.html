@@ -33,11 +33,15 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="index.html">Developers</a></li>
-          <li class="header__menuItem"><a href="projects.html">Projects</a></li>
+          <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
+          <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
           <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
-          <li class="header__menuItem"><a href="account.html">My Account</a></li>
-          <li class="header__menuItem"><a href="login.html" class="btn btn--sub">Login/Sign Up</a></li>
+          <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
+          {% if request.user.username %}
+            <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Log Out</a></li>
+          {% else %}
+            <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>
@@ -52,10 +56,11 @@
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="#" method="get">
+          <form class="form" method="post">
+            {% csrf_token %}
             <div class="form__field">
               <label for="formInput#search">Search By Projects </label>
-              <input class="input input--text" id="formInput#search" type="text" name="text"
+              <input class="input input--text" id="formInput#search" type="text" name="search"
                 placeholder="Search by Project Title" />
             </div>
 
@@ -68,167 +73,27 @@
     <section class="projectsList">
       <div class="container">
         <div class="grid grid--three">
-          <div class="column">
-            <div class="card project">
-              <a href="single-project.html" class="project">
-                <img class="project__thumbnail" src="images/project-a.png" alt="project thumbnail" />
-                <div class="card__body">
-                  <h3 class="project__title">Yoga Studio Landing Page Website and Design</h3>
-                  <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">98%</span> Postitive
-                    Feedback (72 Votes)
-                  </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>NextJS</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>GraphQL</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>TypeScript</small>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
 
-          <div class="column">
-            <div class="card project">
-              <a href="single-project.html" class="project">
-                <img class="project__thumbnail" src="images/project-b.png" alt="project thumbnail" />
-                <div class="card__body">
-                  <h3 class="project__title">DevSearch UI Design</h3>
-                  <p><a class="project__author" href="profile.html">By Shahriar P. Shuvo</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">92%</span> Postitive
-                    Feedback (62 Votes)
-                  </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>NextJS</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>GraphQL</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>TypeScript</small>
-                    </span>
-                  </div>
+         {% for project in projects %}
+              <div class="column">
+                <div class="card project">
+                  <a href="{% url 'single-project' project.id %}" class="project">
+                    <img class="project__thumbnail" src="{{ project.image.url }}" alt="project thumbnail" />
+                    <div class="card__body">
+                      <h3 class="project__title">{{ project.title }}</h3>
+                      <p><a class="project__author" href="{% url 'profile' project.user.username %}">By {{ project.user.first_name }} {{ project.user.last_name }}</a></p>
+                          <div class="project__tags">
+                            {% for tag in project.tags %}
+                                <span class="tag tag--pill tag--main">
+                                  <small>{{ tag }}</small>
+                                </span>
+                            {% endfor %}
+                      </div>
+                    </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-          </div>
-
-          <div class="column">
-            <div class="card project">
-              <a href="single-project.html" class="project">
-                <img class="project__thumbnail" src="images/project-c.png" alt="project thumbnail" />
-                <div class="card__body">
-                  <h3 class="project__title">Another Landing Page</h3>
-                  <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">36%</span> Postitive
-                    Feedback (18 Votes)
-                  </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>NextJS</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>GraphQL</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>TypeScript</small>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <div class="column">
-            <div class="card project">
-              <a href="single-project.html" class="project">
-                <img class="project__thumbnail" src="images/project-a.png" alt="project thumbnail" />
-                <div class="card__body">
-                  <h3 class="project__title">Yoga Studio Landing Page Website and Design</h3>
-                  <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">98%</span> Postitive
-                    Feedback (72 Votes)
-                  </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>NextJS</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>GraphQL</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>TypeScript</small>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <div class="column">
-            <div class="card project">
-              <a href="single-project.html" class="project">
-                <img class="project__thumbnail" src="images/project-b.png" alt="project thumbnail" />
-                <div class="card__body">
-                  <h3 class="project__title">DevSearch UI Design</h3>
-                  <p><a class="project__author" href="profile.html">By Shahriar P. Shuvo</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">92%</span> Postitive
-                    Feedback (62 Votes)
-                  </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>NextJS</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>GraphQL</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>TypeScript</small>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <div class="column">
-            <div class="card project">
-              <a href="single-project.html" class="project">
-                <img class="project__thumbnail" src="images/project-c.png" alt="project thumbnail" />
-                <div class="card__body">
-                  <h3 class="project__title">Another Landing Page</h3>
-                  <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>
-                  <p class="project--rating">
-                    <span style="font-weight: bold;">36%</span> Postitive
-                    Feedback (18 Votes)
-                  </p>
-                  <div class="project__tags">
-                    <span class="tag tag--pill tag--main">
-                      <small>NextJS</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>GraphQL</small>
-                    </span>
-                    <span class="tag tag--pill tag--main">
-                      <small>TypeScript</small>
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
+              </div>
+          {% endfor %}
 
         </div>
       </div>
@@ -236,18 +101,25 @@
 
     <div class="pagination">
       <ul class="container">
-        <li><a href="#" class="btn btn--disabled">&#10094; Prev</a></li>
-        <li><a href="#" class="btn btn--sub">01</a></li>
-        <li><a href="#" class="btn">02</a></li>
-        <li><a href="#" class="btn">03</a></li>
-        <li><a href="#" class="btn">04</a></li>
-        <li><a href="#" class="btn">05</a></li>
-        <li><a href="#" class="btn">06</a></li>
-        <li><a href="#" class="btn">07</a></li>
-        <li><a href="#" class="btn">08</a></li>
-        <li><a href="#" class="btn">09</a></li>
-        <li><a href="#" class="btn">10</a></li>
-        <li><a href="#" class="btn">Next &#10095;</a></li>
+      {% if projects.has_previous %}
+        <li><a href="{% url 'projects' %}?page={{ projects.previous_page_number }}" class="btn">&#10094; Prev</a></li>
+      {% else %}
+          <li><a class="btn btn--disabled">&#10094; Prev</a></li>
+      {% endif %}
+
+          {% for page in projects.paginator.page_range %}
+            {% if projects.number == page %}
+                <li><a href="{% url 'projects' %}?page={{ page }}" class="btn btn--sub">{{ page }}</a></li>
+            {% else %}
+                <li><a href="{% url 'projects' %}?page={{ page }}" class="btn">{{ page }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+      {% if projects.has_next %}
+        <li><a href="{% url 'projects' %}?page={{ projects.next_page_number }}" class="btn">Next &#10095;</a></li>
+      {% else %}
+          <li><a class="btn btn--disabled">Next &#10095;</a></li>
+      {% endif %}
       </ul>
     </div>
   </main>
