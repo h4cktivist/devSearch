@@ -16,6 +16,10 @@ class Project(models.Model):
     def __str__(self):
         return f'{self.user} - {self.title} Project'
 
+    @property
+    def feedbackCount(self):
+        return f'{self.comment_set.count()} feedback(s)'
+
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
