@@ -50,10 +50,14 @@
   <!-- Main Section -->
   <main class="inbox my-xl">
     <div class="content-box">
-      <h3 class="inbox__title">New Messages(<span>2</span>)</h3>
+      <h3 class="inbox__title">New Messages(<span>{{ unread }}</span>)</h3>
       <ul class="messages">
          {% for message in messages %}
-            <li class="message message--unread">
+             {% if message.is_read %}
+                <li class="message message">
+             {% else %}
+                 <li class="message message--unread">
+             {% endif %}
               <a href="{% url 'message' message.id %}">
                 <span class="message__author">{{ message.user_from.first_name }} {{ message.user_from.last_name }}</span>
                 <span class="message__subject">{{ message.subject }}</span>

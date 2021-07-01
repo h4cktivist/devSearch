@@ -52,13 +52,16 @@ def singleProject(request, id):
 @login_required(login_url='login')
 def inbox(request):
     messages = Message.objects.filter(user_to=request.user)
-    return render(request, 'inbox.html', {'messages': messages})
+    unread = messages.filter(is_read=False).count()
+    return render(request, 'inbox.html', {'messages': messages, 'unread': unread})
 
 
 @login_required(login_url='login')
 def singleMessage(request, id):
     message = Message.objects.get(id=id)
     if message.user_to == request.user:
+        message.is_read = True
+        message.save()
         return render(request, 'message.html', {'message': message})
 
     return HttpResponseForbidden
