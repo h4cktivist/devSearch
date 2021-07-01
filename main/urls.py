@@ -9,4 +9,5 @@ urlpatterns = [
 
     path('messages/', views.inbox, name='inbox'),
     path('messages/<int:id>', views.singleMessage, name='message'),
+    path('messages/send/<int:user_id>', views.sendMessage, name='send-message'),
 ]

@@ -51,7 +51,7 @@ def singleProject(request, id):
 
 @login_required(login_url='login')
 def inbox(request):
-    messages = Message.objects.filter(user_to=request.user)
+    messages = Message.objects.filter(user_to=request.user).order_by('-date')
     unread = messages.filter(is_read=False).count()
     return render(request, 'inbox.html', {'messages': messages, 'unread': unread})
 
@@ -65,3 +65,19 @@ def singleMessage(request, id):
         return render(request, 'message.html', {'message': message})
 
     return HttpResponseForbidden
+
+
+@login_required(login_url='login')
+def sendMessage(request, user_id):
+    user_to = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        message = Message(
+            user_to=user_to,
+            user_from=request.user,
+            subject=request.POST.get('subject'),
+            text=request.POST.get('text')
+        )
+        message.save()
+        return redirect('profile', user_to.username)
+
+    return render(request, 'send-message.html', {'user_to': user_to})

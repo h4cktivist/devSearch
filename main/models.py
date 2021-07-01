@@ -41,7 +41,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f'Message from {self.user_from} to {self.user_to}'
-
-    @property
-    def unreadCount(self):
-        return
