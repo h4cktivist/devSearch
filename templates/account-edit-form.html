@@ -34,7 +34,7 @@
                 </label>
                 <ul class="header__menu">
                     <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
-                    <li class="header__menuItem"><a href="projects.html">Projects</a></li>
+                    <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
                     <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
                     <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
                    {% if request.user.username %}
@@ -59,39 +59,44 @@
                     <!-- Input:Text -->
                     <div class="form__field">
                         <label for="formInput#text">Full Name: </label>
-                        <input class="input input--text" id="formInput#text" type="text" name="full_name"
+                        <input class="input input--text" id="formInput#text" type="text" name="full_name" required
                             value="{{ user.first_name }} {{ user.last_name }}" />
                     </div>
 
                     <div class="form__field">
                         <label for="formInput#text">Email: </label>
-                        <input class="input input--text" id="formInput#text" type="text" name="email"
+                        <input class="input input--text" id="formInput#text" type="text" name="email" required
                             value="{{ user.email }}" />
                     </div>
 
                     <!-- Input:Text -->
                     <div class="form__field">
                         <label for="formInput#text">Summary: </label>
-                        <input class="input input--text" id="formInput#text" type="text" name="summary"
+                        <input class="input input--text" id="formInput#text" type="text" name="summary" required
                             value="{{ user.account.summary }}" />
                     </div>
 
                     <!-- Input:Text -->
                     <div class="form__field">
                         <label for="formInput#text">Location: </label>
-                        <input class="input input--text" id="formInput#text" type="text" name="location"
+                        <input class="input input--text" id="formInput#text" type="text" name="location" required
                             value="{{ user.account.location }}" />
                     </div>
 
                     <div class="form__field">
                         <label for="formInput#text">About: </label>
-                        <textarea class="input input--text" id="formInput#text" type="text" name="about">{{ user.account.about }}
-                        </textarea>
+                        <textarea class="input input--text" id="formInput#text" type="text" name="about" required>{{ user.account.about }}</textarea>
+                    </div>
+
+                    <div class="form__field">
+                        <label for="formInput#text">Skills: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="skills" required
+                            value="{% for skill in user.account.other_skills %} {{ skill }}, {% endfor %}" />
                     </div>
 
                     <div class="form__field">
                         <label for="formInput#text">Avatar: </label>
-                        <input class="input input--text" id="formInput#text" type="file" accept="image/*" name="avatar" />
+                        <input class="input input--text" id="formInput#text" type="file" accept="image/*" name="avatar"/>
                     </div>
                     {% for msg in messages %}
                         <p>{{ msg }}</p>

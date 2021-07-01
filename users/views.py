@@ -90,6 +90,7 @@ def editAccount(request):
             user.account.summary = request.POST.get('summary')
             user.account.location = request.POST.get('location')
             user.account.about = request.POST.get('about')
+            user.account.other_skills = request.POST.get('skills').rsplit(', ')
             if request.FILES.get('avatar') is not None:
                 user.account.avatar = request.FILES.get('avatar')
 
@@ -140,5 +141,60 @@ def deleteSkill(request, id):
                 'warning': f'Are your sure you want to delete this {skill.name} skill?'
             }
             return render(request, 'delete.html', context)
+    else:
+        return HttpResponseForbidden()
+
+
+@login_required(login_url='login')
+def addProject(request):
+    if request.method == 'POST':
+        project = Project(
+            user=request.user,
+            title=request.POST.get('title'),
+            description=request.POST.get('description'),
+            tags=request.POST.get('tags').rsplit(', '),
+            link=request.POST.get('link'),
+            image=request.FILES.get('image')
+        )
+        project.save()
+        return redirect('account')
+
+    return render(request, 'project-add-edit-form.html')
+
+
+@login_required(login_url='login')
+def editProject(request, id):
+    project = Project.objects.get(id=id)
+    if project.user == request.user:
+        if request.method == 'POST':
+            project.title = request.POST.get('title')
+            project.description = request.POST.get('description')
+            project.link = request.POST.get('link')
+            project.tags = request.POST.get('tags').rsplit(', ')
+            if request.FILES.get('image'):
+                project.image = request.FILES.get('image')
+
+            project.save()
+            return redirect('account')
+
+        return render(request, 'project-add-edit-form.html', {'project': project})
+
+    else:
+        return HttpResponseForbidden()
+
+
+@login_required(login_url='login')
+def deleteProject(request, id):
+    project = Project.objects.get(id=id)
+    if project.user == request.user:
+        if request.method == 'POST':
+            project.delete()
+            return redirect('account')
+
+        context = {
+            'warning': f'Are your sure you want to delete this {project.title} project?'
+        }
+        return render(request, 'delete.html', context)
+
     else:
         return HttpResponseForbidden()

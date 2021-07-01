@@ -34,10 +34,10 @@
                 </label>
                 <ul class="header__menu">
                     <li class="header__menuItem"><a href="{% url 'index' %}">Developers</a></li>
-                    <li class="header__menuItem"><a href="projects.html">Projects</a></li>
+                    <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
                     <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
                     <li class="header__menuItem"><a href="{% url 'account' %}">My Account</a></li>
-                    {% if request.user.username %}
+                   {% if request.user.username %}
                        <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Log Out</a></li>
                     {% else %}
                        <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
@@ -54,22 +54,40 @@
                 <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
                 <br>
 
-                <form class="form" method="POST">
+                <form class="form" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- Input:Text -->
                     <div class="form__field">
-                        <label for="formInput#text">Skill Name: </label>
-                        <input class="input input--text" id="formInput#text" type="text" name="name" required
-                            placeholder="Enter Skill Name" value="{{ skill.name }}"/>
+                        <label for="formInput#text">Project Title: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="title" required
+                            value="{{ project.title }}" />
                     </div>
 
-                    <!-- Input:Text -->
                     <div class="form__field">
-                        <label for="formInput#text">Skill Description: </label>
-                        <input class="input input--text" id="formInput#text" type="text" name="desc" required
-                            placeholder="Enter Skill Description" value="{{ skill.description }}"/>
+                        <label for="formInput#text">Project Description: </label>
+                        <textarea class="input input--text" id="formInput#text" type="text" name="description" required>{{ project.description }}</textarea>
                     </div>
 
+                    <div class="form__field">
+                        <label for="formInput#text">Source Code Link: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="link" required
+                            value="{{ project.link }}" />
+                    </div>
+
+                    <div class="form__field">
+                        <label for="formInput#text">Tags: </label>
+                        <input class="input input--text" id="formInput#text" type="text" name="tags"
+                            placeholder="e.g Django, PosgreSQL, React" required
+                            value="{% for tag in project.tags %} {{ tag }}, {% endfor %}" />
+                    </div>
+
+                    <div class="form__field">
+                        <label for="formInput#text">Featured Image: </label>
+                        <input class="input input--text" id="formInput#text" type="file" accept="image/*" name="image" />
+                    </div>
+                    {% for msg in messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
                     <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
                 </form>
             </div>
