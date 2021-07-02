@@ -75,18 +75,25 @@
           <div class="comments">
             <h3 class="singleProject__subtitle">Feedbacks</h3>
 
-            <form class="form" method="POST">
-              {% csrf_token %}
-              <!-- Textarea -->
-              <div class="form__field">
-                <label for="formInput#textarea">Comments: </label>
-                <textarea class="input input--textarea" name="message" id="formInput#textarea"
-                  placeholder="Write your comments here..." required></textarea>
-              </div>
-              <input class="btn btn--sub btn--lg" type="submit" value="Comment" />
-            </form>
+            {% if not request.user.is_authenticated %}
+                 <a href="{% url 'login' %}">Please login to leave a review</a>
+            {% elif request.user == project.user %}
+                 <p>You cannot comment your own work</p>
+            {% else %}
+                <form class="form" method="POST">
+                  {% csrf_token %}
+                  <!-- Textarea -->
+                  <div class="form__field">
+                    <label for="formInput#textarea">Comments: </label>
+                    <textarea class="input input--textarea" name="message" id="formInput#textarea"
+                      placeholder="Write your comments here..." required></textarea>
+                  </div>
+                  <input class="btn btn--sub btn--lg" type="submit" value="Comment" />
+                </form>
+            {% endif %}
+
             <div class="commentList">
-              {% for comment in project.comment_set.order_by %}
+              {% for comment in project.comment_set.all %}
                   <div class="comment">
                     <a href="{% url 'profile' comment.author.username %}">
                       <img class="avatar avatar--md" src="{{ comment.author.account.avatar.url }}" alt="user" />
