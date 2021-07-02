@@ -12,9 +12,10 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     if request.method == 'POST':
         search_data = request.POST.get('search')
-        users = User.objects.filter(Q(first_name__contains=search_data) | Q(last_name__contains=search_data))
+        users = User.objects.filter(Q(first_name__contains=search_data) | Q(last_name__contains=search_data))\
+            .order_by('-date_joined')
     else:
-        users = User.objects.all()
+        users = User.objects.order_by('-date_joined')
 
     paginator = Paginator(users, 6)
     page = request.GET.get('page', 1)
@@ -26,9 +27,9 @@ def index(request):
 def projects(request):
     if request.method == 'POST':
         search_data = request.POST.get('search')
-        projects = Project.objects.filter(title__contains=search_data)
+        projects = Project.objects.filter(title__contains=search_data).order_by('-date')
     else:
-        projects = Project.objects.order_by('date')
+        projects = Project.objects.order_by('-date')
 
     paginator = Paginator(projects, 6)
     page = request.GET.get('page', 1)

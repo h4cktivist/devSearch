@@ -61,7 +61,7 @@ def logOut(request):
 def account(request):
     context = {
         'user': request.user,
-        'projects': Project.objects.filter(user=request.user)
+        'projects': Project.objects.filter(user=request.user).order_by('-date')
     }
     return render(request, 'account.html', context)
 
@@ -70,7 +70,7 @@ def profile(request, username):
     user = User.objects.get(username=username)
     context = {
         'user': user,
-        'projects': Project.objects.filter(user=user)
+        'projects': Project.objects.filter(user=user).order_by('-date')
     }
     return render(request, 'profile.html', context)
 
