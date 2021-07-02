@@ -1,4 +1,4 @@
-# devSearch - Connect With From Around The World!
+# :computer: DevSearch - Connect With Developers From Around The World!
 
 ### Technologies Stack
 - Django
