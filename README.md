@@ -47,6 +47,10 @@ DATABASES = {
     }
 }
 ```
+Then run the migrations:
+```sh
+python manage.py migrate
+```
 
 Also change this up to your email for reset password confirmation feature
 ```python
