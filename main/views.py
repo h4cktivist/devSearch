@@ -2,11 +2,12 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 
-from .models import Project, Message
 from django.contrib.auth.models import User
 from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
+
+from .models import Project, Message
 
 
 def index(request):

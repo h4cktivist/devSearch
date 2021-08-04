@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from django.contrib.auth.models import User
-from .models import Skill
-from main.models import Project
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
@@ -11,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 
 from django.db import IntegrityError
 from django.http import HttpResponseForbidden
+
+from .models import Skill
+from main.models import Project
 
 
 def signup(request):
